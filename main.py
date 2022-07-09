@@ -27,6 +27,8 @@ def get_args_parser():
     parser.add_argument('--lr_drop', default=200, type=int)
     parser.add_argument('--clip_max_norm', default=0.1, type=float,
                         help='gradient clipping max norm')
+    parser.add_argument('--num_classes', type=int, default=20,
+                        help="Number of classes in your dataset. Overridden by coco and coco_panoptic datasets")
 
     # Model parameters
     parser.add_argument('--frozen_weights', type=str, default=None,

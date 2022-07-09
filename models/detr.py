@@ -310,11 +310,25 @@ def build(args):
     # you should pass `num_classes` to be 2 (max_obj_id + 1).
     # For more details on this, check the following discussion
     # https://github.com/facebookresearch/detr/issues/108#issuecomment-650269223
-    num_classes = 20 if args.dataset_file != 'coco' else 91
-    if args.dataset_file == "coco_panoptic":
-        # for panoptic, we just add a num_classes that is large enough to hold
-        # max_obj_id + 1, but the exact value doesn't really matter
+
+    # modification for custom dataset
+    # https://github.com/lessw2020/training-detr/blob/master/training_detr_colab.ipynb
+
+    try:
+        num_classes = args.num_classes
+    except AttributeError:
+        num_classes = 20  # default to 20 for backwards compat if missing args.num_classes
+
+    # over-ride num_classes for known datasets:
+    if args.dataset_file == 'coco':
+        num_classes = 91
+
+    if args.dataset_file == 'coco_panoptic':
         num_classes = 250
+
+    print(f"---> num_classes = {num_classes}")
+    print(f"for dataset:  {args.dataset_file}")
+
     device = torch.device(args.device)
 
     backbone = build_backbone(args)
